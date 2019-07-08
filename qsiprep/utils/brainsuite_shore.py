@@ -222,8 +222,11 @@ class BrainSuiteShoreModel(Cache):
                 try:
                     lasso_fit = lasso.fit(M, data)
                     coef = lasso_fit.coef_
-                    alpha = lasso_fit.alpha_
                     fitted = lasso_fit.predict(M)
+                    if self.regularization == "CV":
+                        alpha = lasso_fit.alpha_
+                    else:
+                        alpha = self.l1_alpha
 
                 except Warning as this_warning:
                     if isinstance(this_warning, ConvergenceWarning):
